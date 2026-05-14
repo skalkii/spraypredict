@@ -1,11 +1,15 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import { getLang } from "@/lib/i18n-server";
+import { getT } from "@/lib/i18n";
 
-export const metadata: Metadata = {
-  title: "Spray Window Predictor",
-  description:
-    "Find the optimal hourly windows in the next 5 days to spray pesticide, fungicide, herbicide, or foliar fertilizer at your location.",
-};
+export function generateMetadata(): Metadata {
+  const t = getT(getLang());
+  return {
+    title: t.appTitle,
+    description: t.description,
+  };
+}
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -16,8 +20,9 @@ export const viewport: Viewport = {
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const lang = getLang();
   return (
-    <html lang="en">
+    <html lang={lang}>
       <body className="min-h-screen bg-slate-50 text-slate-900 antialiased">
         {children}
       </body>

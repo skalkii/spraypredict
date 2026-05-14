@@ -1,22 +1,25 @@
 "use client";
 
 import { SPRAY_PROFILES } from "@/lib/spray-rules";
+import type { Strings } from "@/lib/i18n";
 
 interface Props {
+  t: Strings;
   value: string;
   onChange: (id: string) => void;
 }
 
-export function SprayTypePicker({ value, onChange }: Props) {
+export function SprayTypePicker({ t, value, onChange }: Props) {
   const profiles = Object.values(SPRAY_PROFILES);
   return (
     <fieldset className="space-y-2">
-      <legend className="text-sm font-medium text-slate-700 mb-1">
-        Spray type
-      </legend>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         {profiles.map((p) => {
           const selected = value === p.id;
+          const labelKey = `profile_${p.id}` as keyof Strings;
+          const descKey = `profile_${p.id}_desc` as keyof Strings;
+          const label = (t[labelKey] as string) ?? p.label;
+          const desc = (t[descKey] as string) ?? p.description;
           return (
             <label
               key={p.id}
@@ -35,8 +38,8 @@ export function SprayTypePicker({ value, onChange }: Props) {
                 onChange={() => onChange(p.id)}
                 className="sr-only"
               />
-              <div className="font-medium text-slate-900">{p.label}</div>
-              <div className="text-xs text-slate-600 mt-0.5">{p.description}</div>
+              <div className="font-medium text-slate-900">{label}</div>
+              <div className="text-xs text-slate-600 mt-0.5">{desc}</div>
             </label>
           );
         })}

@@ -5,7 +5,10 @@ import { detectWindows, pickBest } from "@/lib/window-detector";
 import { ForecastCalendar } from "@/components/ForecastCalendar";
 import { WindowSummary } from "@/components/WindowSummary";
 import { Explainer } from "@/components/Explainer";
+import { LanguagePicker } from "@/components/LanguagePicker";
 import { ArrowLeft } from "@/components/Icons";
+import { getLang } from "@/lib/i18n-server";
+import { getT, intlLocale, type Strings } from "@/lib/i18n";
 
 export const revalidate = 600;
 
@@ -21,6 +24,8 @@ export default async function ForecastPage({
 }: {
   searchParams: SearchParams;
 }) {
+  const lang = getLang();
+  const t = getT(lang);
   const lat = parseFloat(searchParams.lat ?? "");
   const lng = parseFloat(searchParams.lng ?? "");
   const sprayId = searchParams.sprayType ?? "fungicide_contact";
@@ -31,20 +36,20 @@ export default async function ForecastPage({
     return (
       <main className="mx-auto max-w-xl px-4 py-12">
         <div className="rounded-2xl border border-rose-300 bg-rose-50 p-5">
-          <h1 className="text-lg font-semibold text-rose-900">Invalid request</h1>
-          <p className="text-sm text-rose-800 mt-1">
-            Missing or invalid location / spray type.
-          </p>
-          <Link
-            href="/"
-            className="inline-block mt-3 text-sm text-rose-900 underline"
-          >
-            ← Start over
+          <h1 className="text-lg font-semibold text-rose-900">
+            {t.invalidRequest}
+          </h1>
+          <p className="text-sm text-rose-800 mt-1">{t.invalidLocationSpray}</p>
+          <Link href="/" className="inline-block mt-3 text-sm text-rose-900 underline">
+            ← {t.startOver}
           </Link>
         </div>
       </main>
     );
   }
+
+  const profileLabel =
+    (t[`profile_${profile.id}` as keyof Strings] as string) ?? profile.label;
 
   let body;
   try {
@@ -55,12 +60,12 @@ export default async function ForecastPage({
 
     body = (
       <>
-        <WindowSummary best={best} total={windows.length} sprayLabel={profile.label} />
+        <WindowSummary best={best} total={windows.length} t={t} lang={lang} />
 
         {windows.length > 0 && (
           <section className="rounded-2xl bg-white border border-slate-200 p-5">
             <h2 className="font-semibold text-slate-900 mb-3">
-              All spray windows ({windows.length})
+              {t.allWindows} ({windows.length})
             </h2>
             <ul className="divide-y divide-slate-100">
               {windows.map((w, i) => (
@@ -73,7 +78,7 @@ export default async function ForecastPage({
                     />
                     <span className="font-medium text-slate-800">
                       {new Date(w.startTime.slice(0, 10) + "T12:00:00Z")
-                        .toLocaleDateString("en", {
+                        .toLocaleDateString(intlLocale(lang), {
                           weekday: "short",
                           month: "short",
                           day: "numeric",
@@ -85,7 +90,7 @@ export default async function ForecastPage({
                     </span>
                   </div>
                   <div className="text-sm text-slate-500">
-                    {Math.round(w.durationHours)}h · score {w.avgScore}
+                    {Math.round(w.durationHours)}h · {w.avgScore}
                   </div>
                 </li>
               ))}
@@ -95,12 +100,12 @@ export default async function ForecastPage({
 
         <section>
           <h2 className="font-semibold text-slate-900 mb-3">
-            Hourly forecast (5 days)
+            {t.hourlyForecast}
           </h2>
-          <ForecastCalendar hours={hours} />
+          <ForecastCalendar hours={hours} t={t} lang={lang} />
         </section>
 
-        <Explainer />
+        <Explainer t={t} />
       </>
     );
   } catch (e) {
@@ -108,11 +113,11 @@ export default async function ForecastPage({
     body = (
       <div className="rounded-2xl border border-rose-300 bg-rose-50 p-5">
         <h2 className="text-lg font-semibold text-rose-900">
-          Couldn&apos;t fetch weather
+          {t.cantFetchWeather}
         </h2>
         <p className="text-sm text-rose-800 mt-1">{msg}</p>
         <Link href="/" className="inline-block mt-3 text-sm text-rose-900 underline">
-          ← Try again
+          ← {t.tryAgain}
         </Link>
       </div>
     );
@@ -120,25 +125,28 @@ export default async function ForecastPage({
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-6 sm:py-8">
-      <header className="mb-5">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-1.5 text-sm text-slate-600 hover:text-slate-900 mb-2"
-        >
-          <ArrowLeft className="w-4 h-4" /> Back
-        </Link>
-        <div className="text-xs uppercase tracking-wide text-emerald-700 font-semibold">
-          {profile.label}
+      <header className="mb-5 flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-1.5 text-sm text-slate-600 hover:text-slate-900 mb-2"
+          >
+            <ArrowLeft className="w-4 h-4" /> {t.back}
+          </Link>
+          <div className="text-xs uppercase tracking-wide text-emerald-700 font-semibold">
+            {profileLabel}
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 mt-0.5 truncate">
+            {label}
+          </h1>
         </div>
-        <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 mt-0.5">
-          {label}
-        </h1>
+        <LanguagePicker current={lang} label={t.language} />
       </header>
 
       <div className="space-y-5">{body}</div>
 
       <footer className="mt-10 text-center text-xs text-slate-500">
-        Weather: Open-Meteo. Always follow product label.
+        {t.weatherCredit}
       </footer>
     </main>
   );

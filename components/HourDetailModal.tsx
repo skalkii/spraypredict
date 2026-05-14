@@ -2,7 +2,9 @@
 
 import { useEffect, useRef } from "react";
 import type { HourScored } from "@/lib/types";
-import { RATING_BG_SOFT, RATING_LABEL, hourOfDay } from "@/lib/format";
+import type { Strings, Lang } from "@/lib/i18n";
+import { intlLocale } from "@/lib/i18n";
+import { RATING_BG_SOFT, hourOfDay } from "@/lib/format";
 import {
   X,
   Wind,
@@ -15,26 +17,11 @@ import {
 } from "./Icons";
 
 const COMPASS = [
-  "N",
-  "NNE",
-  "NE",
-  "ENE",
-  "E",
-  "ESE",
-  "SE",
-  "SSE",
-  "S",
-  "SSW",
-  "SW",
-  "WSW",
-  "W",
-  "WNW",
-  "NW",
-  "NNW",
+  "N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE",
+  "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW",
 ];
 
 function compass(deg: number): string {
-  // Open-Meteo wind_direction_10m is the bearing the wind is COMING FROM.
   const idx = Math.round(deg / 22.5) % 16;
   return COMPASS[idx];
 }
@@ -42,17 +29,26 @@ function compass(deg: number): string {
 interface Props {
   hour: HourScored;
   onClose: () => void;
+  t: Strings;
+  lang: Lang;
 }
 
-function fmtHour(iso: string): string {
+function fmtHour(iso: string, lang: Lang): string {
   const h = hourOfDay(iso);
-  if (h === 0) return "12 AM";
-  if (h === 12) return "12 PM";
-  if (h < 12) return `${h} AM`;
-  return `${h - 12} PM`;
+  return new Intl.DateTimeFormat(intlLocale(lang), {
+    hour: "numeric",
+    hour12: true,
+    timeZone: "UTC",
+  }).format(new Date(`2026-01-01T${String(h).padStart(2, "0")}:00:00Z`));
 }
 
-export function HourDetailModal({ hour, onClose }: Props) {
+function ratingLabel(rating: HourScored["rating"], t: Strings): string {
+  if (rating === "green") return t.ratingGreen;
+  if (rating === "yellow") return t.ratingYellow;
+  return t.ratingRed;
+}
+
+export function HourDetailModal({ hour, onClose, t, lang }: Props) {
   const ref = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
@@ -71,7 +67,7 @@ export function HourDetailModal({ hour, onClose }: Props) {
     if (e.target === ref.current) onClose();
   }
 
-  const dateLabel = new Intl.DateTimeFormat("en", {
+  const dateLabel = new Intl.DateTimeFormat(intlLocale(lang), {
     weekday: "short",
     month: "short",
     day: "numeric",
@@ -87,29 +83,25 @@ export function HourDetailModal({ hour, onClose }: Props) {
       <div className={`px-5 py-4 border-b ${RATING_BG_SOFT[hour.rating]}`}>
         <div className="flex items-center justify-between gap-3">
           <div>
-            <div className="text-xs uppercase tracking-wide opacity-70">
-              {dateLabel}
-            </div>
-            <div className="text-xl font-bold">{fmtHour(hour.time)}</div>
+            <div className="text-xs uppercase tracking-wide opacity-70">{dateLabel}</div>
+            <div className="text-xl font-bold">{fmtHour(hour.time, lang)}</div>
           </div>
           <div className="text-right">
-            <div className="text-xs uppercase tracking-wide opacity-70">
-              Rating
-            </div>
+            <div className="text-xs uppercase tracking-wide opacity-70">{t.rating}</div>
             <div className="font-bold flex items-center gap-1.5">
               {hour.rating === "red" ? (
                 <AlertTriangle className="w-5 h-5" />
               ) : (
                 <CheckCircle className="w-5 h-5" />
               )}
-              {RATING_LABEL[hour.rating]}
+              {ratingLabel(hour.rating, t)}
             </div>
           </div>
           <button
             type="button"
             onClick={onClose}
             className="rounded-full p-1 hover:bg-black/10"
-            aria-label="Close"
+            aria-label={t.close}
           >
             <X className="w-5 h-5" />
           </button>
@@ -120,25 +112,25 @@ export function HourDetailModal({ hour, onClose }: Props) {
         <div className="grid grid-cols-2 gap-3">
           <Stat
             icon={<Thermometer className="w-4 h-4" />}
-            label="Temperature"
+            label={t.temperature}
             value={`${hour.temp.toFixed(1)}°C`}
           />
           <Stat
             icon={<Droplet className="w-4 h-4" />}
-            label="Humidity"
+            label={t.humidity}
             value={`${hour.humidity}%`}
           />
           <div className="rounded-lg border border-slate-200 px-3 py-2.5 bg-slate-50">
             <div className="text-xs text-slate-500 flex items-center gap-1.5">
               <Wind className="w-4 h-4" />
-              Wind
+              {t.wind}
             </div>
             <div className="flex items-center gap-2 mt-0.5">
               <div className="text-base font-semibold text-slate-900">
                 {hour.windSpeed.toFixed(1)} km/h
               </div>
               <div
-                title={`From ${compass(hour.windDirection)} (${Math.round(hour.windDirection)}°)`}
+                title={`${compass(hour.windDirection)} (${Math.round(hour.windDirection)}°)`}
                 className="flex items-center gap-0.5 text-slate-600"
               >
                 <ArrowUp
@@ -149,33 +141,33 @@ export function HourDetailModal({ hour, onClose }: Props) {
               </div>
             </div>
             <div className="text-xs text-slate-500 mt-0.5">
-              Gusts {hour.windGusts.toFixed(0)} km/h
+              {t.gusts} {hour.windGusts.toFixed(0)} km/h
             </div>
           </div>
           <Stat
             icon={<Droplet className="w-4 h-4" />}
-            label="Rain risk"
+            label={t.rainRisk}
             value={`${hour.precipitationProb}%`}
-            sub={`${hour.precipitationMm.toFixed(1)}mm this hr`}
+            sub={`${hour.precipitationMm.toFixed(1)}mm ${t.thisHour}`}
           />
           <Stat
             icon={<Clock className="w-4 h-4" />}
-            label="Delta-T"
+            label={t.deltaT}
             value={`${hour.deltaT.toFixed(1)}°C`}
-            sub="Droplet drying index"
+            sub={t.dropletDrying}
           />
           <Stat
             icon={<Droplet className="w-4 h-4" />}
-            label="Look-ahead rain"
+            label={t.rainNext}
             value={`${hour.rainNextWindowMm.toFixed(1)}mm`}
-            sub={`${hour.rainNextWindowProb}% peak`}
+            sub={`${hour.rainNextWindowProb}% ${t.peak}`}
           />
         </div>
 
         {hour.positives.length > 0 && (
           <div>
             <div className="text-sm font-medium text-emerald-700 mb-1.5">
-              What&apos;s good
+              {t.whatsGood}
             </div>
             <ul className="space-y-1">
               {hour.positives.map((p, i) => (
@@ -191,7 +183,7 @@ export function HourDetailModal({ hour, onClose }: Props) {
         {hour.flags.length > 0 && (
           <div>
             <div className="text-sm font-medium text-rose-700 mb-1.5">
-              What&apos;s not
+              {t.whatsNot}
             </div>
             <ul className="space-y-1">
               {hour.flags.map((f, i) => (
@@ -209,7 +201,7 @@ export function HourDetailModal({ hour, onClose }: Props) {
           onClick={onClose}
           className="w-full rounded-lg bg-slate-900 text-white px-4 py-2.5 font-medium hover:bg-slate-800"
         >
-          Close
+          {t.close}
         </button>
       </div>
     </dialog>
@@ -233,9 +225,7 @@ function Stat({
         {icon}
         {label}
       </div>
-      <div className="text-base font-semibold text-slate-900 mt-0.5">
-        {value}
-      </div>
+      <div className="text-base font-semibold text-slate-900 mt-0.5">{value}</div>
       {sub && <div className="text-xs text-slate-500 mt-0.5">{sub}</div>}
     </div>
   );

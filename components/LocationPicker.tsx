@@ -3,15 +3,11 @@
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import type { GeocodingResult } from "@/lib/types";
+import type { Strings } from "@/lib/i18n";
 import { MapPin, Search, Loader } from "./Icons";
 
 const MapPicker = dynamic(() => import("./MapPicker").then((m) => m.MapPicker), {
   ssr: false,
-  loading: () => (
-    <div className="w-full h-64 rounded-lg border border-slate-200 bg-slate-100 flex items-center justify-center text-slate-500 text-sm">
-      Loading map…
-    </div>
-  ),
 });
 
 export interface PickedLocation {
@@ -21,11 +17,12 @@ export interface PickedLocation {
 }
 
 interface Props {
+  t: Strings;
   value: PickedLocation | null;
   onChange: (loc: PickedLocation | null) => void;
 }
 
-export function LocationPicker({ value, onChange }: Props) {
+export function LocationPicker({ t, value, onChange }: Props) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<GeocodingResult[]>([]);
   const [searching, setSearching] = useState(false);
@@ -60,7 +57,7 @@ export function LocationPicker({ value, onChange }: Props) {
 
   function useBrowserGeolocation() {
     if (!navigator.geolocation) {
-      setGeoError("Geolocation not supported by this browser");
+      setGeoError(t.geoUnsupported);
       return;
     }
     setGeoError(null);
@@ -71,14 +68,14 @@ export function LocationPicker({ value, onChange }: Props) {
         onChange({
           latitude: +pos.coords.latitude.toFixed(4),
           longitude: +pos.coords.longitude.toFixed(4),
-          label: `My location (${pos.coords.latitude.toFixed(2)}°, ${pos.coords.longitude.toFixed(2)}°)`,
+          label: `${pos.coords.latitude.toFixed(2)}°, ${pos.coords.longitude.toFixed(2)}°`,
         });
         setQuery("");
         setResults([]);
       },
       (err) => {
         setGeoLoading(false);
-        setGeoError(err.message || "Could not get location");
+        setGeoError(err.message || t.geoFailed);
       },
       { enableHighAccuracy: false, timeout: 8000, maximumAge: 60_000 },
     );
@@ -99,7 +96,7 @@ export function LocationPicker({ value, onChange }: Props) {
     onChange({
       latitude: lat,
       longitude: lng,
-      label: `Pinned (${lat.toFixed(2)}°, ${lng.toFixed(2)}°)`,
+      label: `${lat.toFixed(2)}°, ${lng.toFixed(2)}°`,
     });
   }
 
@@ -116,12 +113,12 @@ export function LocationPicker({ value, onChange }: Props) {
         ) : (
           <MapPin className="w-5 h-5" />
         )}
-        {geoLoading ? "Locating…" : "Use my current location"}
+        {geoLoading ? t.locating : t.useMyLocation}
       </button>
       {geoError && <p className="text-sm text-rose-600">{geoError}</p>}
 
       <div className="text-center text-xs uppercase tracking-wide text-slate-500">
-        or search a city
+        {t.orSearch}
       </div>
 
       <div className="relative">
@@ -130,7 +127,7 @@ export function LocationPicker({ value, onChange }: Props) {
           type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="e.g. Bengaluru, Nairobi, Iowa City"
+          placeholder={t.searchPlaceholder}
           className="w-full rounded-lg border border-slate-300 bg-white pl-9 pr-3 py-3 text-base focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
         />
         {searching && (
@@ -144,7 +141,7 @@ export function LocationPicker({ value, onChange }: Props) {
           onClick={() => setShowMap((v) => !v)}
           className="text-sm text-emerald-700 hover:text-emerald-900 underline"
         >
-          {showMap ? "Hide map" : "or pin on a map"}
+          {showMap ? t.hideMap : t.orPinMap}
         </button>
       </div>
 
@@ -180,7 +177,7 @@ export function LocationPicker({ value, onChange }: Props) {
         <div className="rounded-lg border border-emerald-300 bg-emerald-50 px-4 py-3 flex items-center justify-between">
           <div>
             <div className="text-xs uppercase tracking-wide text-emerald-700">
-              Selected
+              {t.selected}
             </div>
             <div className="font-medium text-emerald-900">{value.label}</div>
           </div>
@@ -189,7 +186,7 @@ export function LocationPicker({ value, onChange }: Props) {
             onClick={() => onChange(null)}
             className="text-sm text-emerald-700 underline hover:text-emerald-900"
           >
-            Change
+            {t.change}
           </button>
         </div>
       )}

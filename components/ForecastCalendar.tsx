@@ -2,16 +2,15 @@
 
 import { useState } from "react";
 import type { HourScored } from "@/lib/types";
-import {
-  RATING_BG,
-  formatDayLabel,
-  groupByDay,
-  hourOfDay,
-} from "@/lib/format";
+import type { Strings, Lang } from "@/lib/i18n";
+import { intlLocale } from "@/lib/i18n";
+import { RATING_BG, groupByDay, hourOfDay } from "@/lib/format";
 import { HourDetailModal } from "./HourDetailModal";
 
 interface Props {
   hours: HourScored[];
+  t: Strings;
+  lang: Lang;
 }
 
 const AXIS_MARKERS = [
@@ -21,7 +20,26 @@ const AXIS_MARKERS = [
   { h: 18, label: "6p" },
 ];
 
-export function ForecastCalendar({ hours }: Props) {
+function dayLabel(date: string, t: Strings, lang: Lang): string {
+  const today = new Date().toISOString().slice(0, 10);
+  const tomorrow = new Date(Date.now() + 86_400_000).toISOString().slice(0, 10);
+  if (date === today) return t.today;
+  if (date === tomorrow) return t.tomorrow;
+  return new Intl.DateTimeFormat(intlLocale(lang), {
+    weekday: "long",
+    timeZone: "UTC",
+  }).format(new Date(date + "T12:00:00Z"));
+}
+
+function shortDate(date: string, lang: Lang): string {
+  return new Intl.DateTimeFormat(intlLocale(lang), {
+    month: "short",
+    day: "numeric",
+    timeZone: "UTC",
+  }).format(new Date(date + "T12:00:00Z"));
+}
+
+export function ForecastCalendar({ hours, t, lang }: Props) {
   const [selected, setSelected] = useState<HourScored | null>(null);
   const byDay = groupByDay(hours);
   const days = Object.keys(byDay).sort();
@@ -29,21 +47,21 @@ export function ForecastCalendar({ hours }: Props) {
   return (
     <div className="space-y-4">
       <div className="sticky top-0 z-10 -mx-4 px-4 py-2 bg-slate-50/85 backdrop-blur supports-[backdrop-filter]:bg-slate-50/75 border-b border-slate-200">
-        <div className="flex items-center gap-3 text-xs text-slate-600">
+        <div className="flex items-center gap-3 text-xs text-slate-600 flex-wrap">
           <span className="inline-flex items-center gap-1.5">
-            <span className="w-3 h-3 rounded-sm bg-emerald-500" /> Good
+            <span className="w-3 h-3 rounded-sm bg-emerald-500" /> {t.legendGood}
           </span>
           <span className="inline-flex items-center gap-1.5">
-            <span className="w-3 h-3 rounded-sm bg-amber-400" /> Marginal
+            <span className="w-3 h-3 rounded-sm bg-amber-400" /> {t.legendMarginal}
           </span>
           <span className="inline-flex items-center gap-1.5">
-            <span className="w-3 h-3 rounded-sm bg-rose-500" /> Avoid
+            <span className="w-3 h-3 rounded-sm bg-rose-500" /> {t.legendAvoid}
           </span>
           <span className="inline-flex items-center gap-1.5 ml-2 opacity-60">
-            <span className="w-3 h-3 rounded-sm bg-slate-400" /> Night
+            <span className="w-3 h-3 rounded-sm bg-slate-400" /> {t.legendNight}
           </span>
           <span className="ml-auto text-slate-400 hidden sm:inline">
-            Tap any hour for details
+            {t.tapHourHint}
           </span>
         </div>
       </div>
@@ -52,12 +70,8 @@ export function ForecastCalendar({ hours }: Props) {
         {days.map((day, i) => (
           <DayRow
             key={day}
-            label={formatDayLabel(day + "T12:00")}
-            sublabel={new Date(day + "T12:00:00Z").toLocaleDateString("en", {
-              month: "short",
-              day: "numeric",
-              timeZone: "UTC",
-            })}
+            label={dayLabel(day, t, lang)}
+            sublabel={shortDate(day, lang)}
             hours={byDay[day]}
             onPick={setSelected}
             showAxis={i === 0}
@@ -66,14 +80,13 @@ export function ForecastCalendar({ hours }: Props) {
       </div>
 
       {selected && (
-        <HourDetailModal hour={selected} onClose={() => setSelected(null)} />
+        <HourDetailModal hour={selected} onClose={() => setSelected(null)} t={t} lang={lang} />
       )}
     </div>
   );
 }
 
 function DaySummary({ hours }: { hours: HourScored[] }) {
-  // Count only daylight hours — night dimming already tells users to ignore them.
   const day = hours.filter((h) => h.isDaylight);
   const g = day.filter((h) => h.rating === "green").length;
   const y = day.filter((h) => h.rating === "yellow").length;
@@ -112,7 +125,6 @@ function DayRow({
   onPick: (h: HourScored) => void;
   showAxis: boolean;
 }) {
-  // Build a 24-cell row keyed by hour-of-day; fill missing hours with placeholder.
   const byHour = new Map<number, HourScored>();
   for (const h of hours) byHour.set(hourOfDay(h.time), h);
   const cells = Array.from({ length: 24 }, (_, i) => byHour.get(i) ?? null);
