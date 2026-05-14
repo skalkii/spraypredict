@@ -4,6 +4,7 @@ import { SPRAY_PROFILES, scoreForecast } from "@/lib/spray-rules";
 import { detectWindows, pickBest } from "@/lib/window-detector";
 import { ForecastCalendar } from "@/components/ForecastCalendar";
 import { WindowSummary } from "@/components/WindowSummary";
+import { Explainer } from "@/components/Explainer";
 import { ArrowLeft } from "@/components/Icons";
 
 export const revalidate = 600;
@@ -98,6 +99,8 @@ export default async function ForecastPage({
           </h2>
           <ForecastCalendar hours={hours} />
         </section>
+
+        <Explainer />
       </>
     );
   } catch (e) {
