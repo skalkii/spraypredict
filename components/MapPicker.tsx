@@ -39,8 +39,8 @@ export function MapPicker({ initialLat, initialLng, onPick }: Props) {
         className: "",
         html:
           `<div style="width:24px;height:24px;border-radius:50% 50% 50% 0;` +
-          `background:#10b981;border:3px solid #fff;` +
-          `transform:rotate(-45deg);box-shadow:0 2px 4px rgba(0,0,0,0.3);"></div>`,
+          `background:#C96442;border:3px solid #FAF9F5;` +
+          `transform:rotate(-45deg);box-shadow:0 2px 4px rgba(31,31,30,0.3);"></div>`,
         iconSize: [24, 24],
         iconAnchor: [12, 24],
       });
@@ -73,7 +73,7 @@ export function MapPicker({ initialLat, initialLng, onPick }: Props) {
   return (
     <div
       ref={elRef}
-      className="w-full h-64 rounded-lg border border-slate-300 overflow-hidden z-0"
+      className="w-full h-64 rounded-xl border border-cream-200 overflow-hidden z-0"
       aria-label="Click on the map to pick a location"
     />
   );

@@ -31,28 +31,32 @@ export function LandingClient({ lang, t }: Props) {
   }
 
   return (
-    <main className="mx-auto max-w-xl px-4 py-8 sm:py-12">
-      <header className="mb-8 flex items-start justify-between gap-3">
+    <main className="mx-auto max-w-xl px-4 py-8 sm:py-14">
+      <header className="mb-10 flex items-start justify-between gap-3">
         <div>
-          <div className="text-emerald-700 font-semibold text-sm uppercase tracking-wide">
+          <div className="text-clay-600 font-medium text-xs uppercase tracking-[0.18em]">
             {t.appTitle}
           </div>
-          <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 mt-1">
+          <h1 className="text-4xl sm:text-5xl font-normal text-ink-900 mt-2 leading-tight tracking-tight">
             {t.tagline}
           </h1>
-          <p className="text-slate-600 mt-2">{t.description}</p>
+          <p className="text-ink-500 mt-3 leading-relaxed">{t.description}</p>
         </div>
         <LanguagePicker current={lang} label={t.language} />
       </header>
 
-      <section className="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 space-y-6">
+      <section className="bg-white rounded-2xl border border-cream-200 p-6 space-y-7">
         <div>
-          <h2 className="text-sm font-medium text-slate-700 mb-2">{t.step1Location}</h2>
+          <h2 className="text-sm font-medium text-ink-700 mb-3 uppercase tracking-wider">
+            {t.step1Location}
+          </h2>
           <LocationPicker t={t} value={location} onChange={setLocation} />
         </div>
 
         <div>
-          <h2 className="text-sm font-medium text-slate-700 mb-2">{t.step2Spray}</h2>
+          <h2 className="text-sm font-medium text-ink-700 mb-3 uppercase tracking-wider">
+            {t.step2Spray}
+          </h2>
           <SprayTypePicker t={t} value={sprayType} onChange={setSprayType} />
         </div>
 
@@ -60,13 +64,13 @@ export function LandingClient({ lang, t }: Props) {
           type="button"
           onClick={submit}
           disabled={!location || submitting}
-          className="w-full rounded-lg bg-emerald-600 text-white px-4 py-3 font-semibold text-lg hover:bg-emerald-700 active:bg-emerald-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full rounded-xl bg-ink-900 text-cream-50 px-4 py-3.5 font-medium text-base hover:bg-ink-700 active:bg-ink-900 transition disabled:opacity-40 disabled:cursor-not-allowed"
         >
           {submitting ? t.loading : t.seeForecast}
         </button>
       </section>
 
-      <footer className="mt-8 text-center text-xs text-slate-500 space-y-1">
+      <footer className="mt-10 text-center text-xs text-ink-500 leading-relaxed">
         <p>{t.disclaimer}</p>
       </footer>
     </main>

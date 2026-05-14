@@ -14,7 +14,7 @@ export function generateMetadata(): Metadata {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#10B981",
+  themeColor: "#FAF9F5",
 };
 
 export default function RootLayout({
@@ -23,7 +23,7 @@ export default function RootLayout({
   const lang = getLang();
   return (
     <html lang={lang}>
-      <body className="min-h-screen bg-slate-50 text-slate-900 antialiased">
+      <body className="min-h-screen bg-cream-50 text-ink-900 antialiased">
         {children}
       </body>
     </html>

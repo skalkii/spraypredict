@@ -9,18 +9,17 @@ interface Props {
 
 export function LanguagePicker({ current, label }: Props) {
   function pick(code: Lang) {
-    // 1 year, sameSite=Lax, path=/
     document.cookie = `lang=${code}; path=/; max-age=${60 * 60 * 24 * 365}; samesite=lax`;
     window.location.reload();
   }
   return (
-    <label className="inline-flex items-center gap-1.5 text-xs text-slate-600">
+    <label className="inline-flex items-center gap-1.5 text-xs text-ink-500 shrink-0">
       <span className="sr-only">{label}</span>
       <span aria-hidden>🌐</span>
       <select
         value={current}
         onChange={(e) => pick(e.target.value as Lang)}
-        className="bg-transparent border border-slate-300 rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+        className="bg-transparent border border-cream-200 rounded-lg px-2 py-1 text-sm text-ink-900 focus:outline-none focus:ring-2 focus:ring-clay-400"
       >
         {LANGS.map((l) => (
           <option key={l.code} value={l.code}>

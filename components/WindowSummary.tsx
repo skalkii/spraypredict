@@ -5,8 +5,6 @@ import { formatHourRange } from "@/lib/format";
 import { CheckCircle, AlertTriangle, Clock } from "./Icons";
 
 function formatPlural(template: string, n: number): string {
-  // Template form: "singular form|plural form" with {n} placeholder. Falls back to
-  // single form if no pipe (languages without an English-style singular/plural split).
   const parts = template.split("|");
   const pick = n === 1 ? parts[0] : parts[parts.length - 1];
   return pick.replace("{n}", String(n));
@@ -36,14 +34,16 @@ function dayLabel(iso: string, t: Strings, lang: Lang): string {
 export function WindowSummary({ best, total, t, lang }: Props) {
   if (!best) {
     return (
-      <div className="rounded-2xl border border-rose-200 bg-rose-50 p-5">
+      <div className="rounded-2xl border border-rose-200 bg-rose-50 p-6">
         <div className="flex items-start gap-3">
-          <AlertTriangle className="w-6 h-6 text-rose-600 shrink-0 mt-0.5" />
+          <AlertTriangle className="w-6 h-6 text-rose-700 shrink-0 mt-0.5" />
           <div>
-            <div className="font-semibold text-rose-900">
+            <div className="font-medium text-rose-900 text-lg">
               {t.noSuitableWindows}
             </div>
-            <p className="text-sm text-rose-800 mt-1">{t.noSuitableBody}</p>
+            <p className="text-sm text-rose-800 mt-1.5 leading-relaxed">
+              {t.noSuitableBody}
+            </p>
           </div>
         </div>
       </div>
@@ -53,22 +53,22 @@ export function WindowSummary({ best, total, t, lang }: Props) {
   const isGreen = best.rating === "green";
   const Icon = isGreen ? CheckCircle : AlertTriangle;
   const color = isGreen
-    ? "border-emerald-300 bg-emerald-50 text-emerald-900"
-    : "border-amber-300 bg-amber-50 text-amber-900";
+    ? "border-emerald-200 bg-emerald-50 text-emerald-900"
+    : "border-amber-200 bg-amber-50 text-amber-900";
   const ratingLabel = isGreen ? t.ratingGreen : t.ratingYellow;
 
   return (
-    <div className={`rounded-2xl border p-5 ${color}`}>
+    <div className={`rounded-2xl border p-6 ${color}`}>
       <div className="flex items-start gap-3">
         <Icon className="w-6 h-6 shrink-0 mt-0.5" />
-        <div className="flex-1">
-          <div className="text-xs uppercase tracking-wide opacity-70">
+        <div className="flex-1 min-w-0">
+          <div className="text-xs uppercase tracking-[0.16em] opacity-70">
             {t.bestWindow}
           </div>
-          <div className="font-semibold text-lg leading-tight">
+          <div className="font-serif text-2xl mt-0.5 leading-tight tracking-tight">
             {dayLabel(best.startTime, t, lang)}, {formatHourRange(best.startTime, best.endTime)}
           </div>
-          <div className="text-sm mt-1 flex items-center gap-3 flex-wrap">
+          <div className="text-sm mt-2 flex items-center gap-3 flex-wrap opacity-80">
             <span className="inline-flex items-center gap-1">
               <Clock className="w-3.5 h-3.5" />
               {Math.round(best.durationHours)}h

@@ -63,11 +63,11 @@ export default async function ForecastPage({
         <WindowSummary best={best} total={windows.length} t={t} lang={lang} />
 
         {windows.length > 0 && (
-          <section className="rounded-2xl bg-white border border-slate-200 p-5">
-            <h2 className="font-semibold text-slate-900 mb-3">
+          <section className="rounded-2xl bg-white border border-cream-200 p-5">
+            <h2 className="font-medium text-ink-900 mb-3 text-lg">
               {t.allWindows} ({windows.length})
             </h2>
-            <ul className="divide-y divide-slate-100">
+            <ul className="divide-y divide-cream-100">
               {windows.map((w, i) => (
                 <li key={i} className="py-2 flex items-center justify-between gap-3">
                   <div className="flex items-center gap-2">
@@ -76,7 +76,7 @@ export default async function ForecastPage({
                         w.rating === "green" ? "bg-emerald-500" : "bg-amber-400"
                       }`}
                     />
-                    <span className="font-medium text-slate-800">
+                    <span className="font-medium text-ink-900">
                       {new Date(w.startTime.slice(0, 10) + "T12:00:00Z")
                         .toLocaleDateString(intlLocale(lang), {
                           weekday: "short",
@@ -85,11 +85,11 @@ export default async function ForecastPage({
                           timeZone: "UTC",
                         })}
                     </span>
-                    <span className="text-slate-600">
+                    <span className="text-ink-500">
                       {w.startTime.slice(11, 16)}–{w.endTime.slice(11, 16)}
                     </span>
                   </div>
-                  <div className="text-sm text-slate-500">
+                  <div className="text-sm text-ink-500">
                     {Math.round(w.durationHours)}h · {w.avgScore}
                   </div>
                 </li>
@@ -99,7 +99,7 @@ export default async function ForecastPage({
         )}
 
         <section>
-          <h2 className="font-semibold text-slate-900 mb-3">
+          <h2 className="font-medium text-ink-900 mb-3 text-lg">
             {t.hourlyForecast}
           </h2>
           <ForecastCalendar hours={hours} t={t} lang={lang} />
@@ -129,14 +129,14 @@ export default async function ForecastPage({
         <div className="min-w-0">
           <Link
             href="/"
-            className="inline-flex items-center gap-1.5 text-sm text-slate-600 hover:text-slate-900 mb-2"
+            className="inline-flex items-center gap-1.5 text-sm text-ink-500 hover:text-ink-900 mb-2"
           >
             <ArrowLeft className="w-4 h-4" /> {t.back}
           </Link>
-          <div className="text-xs uppercase tracking-wide text-emerald-700 font-semibold">
+          <div className="text-xs uppercase tracking-[0.18em] text-clay-600 font-medium">
             {profileLabel}
           </div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 mt-0.5 truncate">
+          <h1 className="text-3xl sm:text-4xl font-normal text-ink-900 mt-1 leading-tight tracking-tight truncate">
             {label}
           </h1>
         </div>
@@ -145,7 +145,7 @@ export default async function ForecastPage({
 
       <div className="space-y-5">{body}</div>
 
-      <footer className="mt-10 text-center text-xs text-slate-500">
+      <footer className="mt-12 text-center text-xs text-ink-500 leading-relaxed">
         {t.weatherCredit}
       </footer>
     </main>

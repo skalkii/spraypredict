@@ -3,16 +3,23 @@
 @tailwind utilities;
 
 html, body {
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+@layer base {
+  h1, h2, h3 {
+    font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+    letter-spacing: -0.01em;
+  }
 }
 
 @layer utilities {
   .text-balance { text-wrap: balance; }
 }
 
-/* Native dialog backdrop polish */
 dialog::backdrop {
-  background: rgba(15, 23, 42, 0.6);
+  background: rgba(31, 31, 30, 0.55);
 }
 dialog[open] {
   animation: pop 120ms ease-out;

@@ -78,7 +78,7 @@ export function HourDetailModal({ hour, onClose, t, lang }: Props) {
     <dialog
       ref={ref}
       onClick={backdropClick}
-      className="rounded-2xl p-0 max-w-md w-[92vw] backdrop:bg-slate-900/60 m-auto"
+      className="rounded-2xl p-0 max-w-md w-[92vw] backdrop:bg-ink-900/55 m-auto"
     >
       <div className={`px-5 py-4 border-b ${RATING_BG_SOFT[hour.rating]}`}>
         <div className="flex items-center justify-between gap-3">
@@ -120,18 +120,18 @@ export function HourDetailModal({ hour, onClose, t, lang }: Props) {
             label={t.humidity}
             value={`${hour.humidity}%`}
           />
-          <div className="rounded-lg border border-slate-200 px-3 py-2.5 bg-slate-50">
-            <div className="text-xs text-slate-500 flex items-center gap-1.5">
+          <div className="rounded-lg border border-cream-200 px-3 py-2.5 bg-cream-50">
+            <div className="text-xs text-ink-500 flex items-center gap-1.5">
               <Wind className="w-4 h-4" />
               {t.wind}
             </div>
             <div className="flex items-center gap-2 mt-0.5">
-              <div className="text-base font-semibold text-slate-900">
+              <div className="text-base font-medium text-ink-900">
                 {hour.windSpeed.toFixed(1)} km/h
               </div>
               <div
                 title={`${compass(hour.windDirection)} (${Math.round(hour.windDirection)}°)`}
-                className="flex items-center gap-0.5 text-slate-600"
+                className="flex items-center gap-0.5 text-ink-500"
               >
                 <ArrowUp
                   className="w-4 h-4"
@@ -140,7 +140,7 @@ export function HourDetailModal({ hour, onClose, t, lang }: Props) {
                 <span className="text-xs">{compass(hour.windDirection)}</span>
               </div>
             </div>
-            <div className="text-xs text-slate-500 mt-0.5">
+            <div className="text-xs text-ink-500 mt-0.5">
               {t.gusts} {hour.windGusts.toFixed(0)} km/h
             </div>
           </div>
@@ -171,7 +171,7 @@ export function HourDetailModal({ hour, onClose, t, lang }: Props) {
             </div>
             <ul className="space-y-1">
               {hour.positives.map((p, i) => (
-                <li key={i} className="text-sm text-slate-700 flex gap-2">
+                <li key={i} className="text-sm text-ink-700 flex gap-2">
                   <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
                   {p}
                 </li>
@@ -187,7 +187,7 @@ export function HourDetailModal({ hour, onClose, t, lang }: Props) {
             </div>
             <ul className="space-y-1">
               {hour.flags.map((f, i) => (
-                <li key={i} className="text-sm text-slate-700 flex gap-2">
+                <li key={i} className="text-sm text-ink-700 flex gap-2">
                   <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
                   {f}
                 </li>
@@ -199,7 +199,7 @@ export function HourDetailModal({ hour, onClose, t, lang }: Props) {
         <button
           type="button"
           onClick={onClose}
-          className="w-full rounded-lg bg-slate-900 text-white px-4 py-2.5 font-medium hover:bg-slate-800"
+          className="w-full rounded-xl bg-ink-900 text-cream-50 px-4 py-2.5 font-medium hover:bg-ink-700"
         >
           {t.close}
         </button>
@@ -220,13 +220,13 @@ function Stat({
   sub?: string;
 }) {
   return (
-    <div className="rounded-lg border border-slate-200 px-3 py-2.5 bg-slate-50">
-      <div className="text-xs text-slate-500 flex items-center gap-1.5">
+    <div className="rounded-lg border border-cream-200 px-3 py-2.5 bg-cream-50">
+      <div className="text-xs text-ink-500 flex items-center gap-1.5">
         {icon}
         {label}
       </div>
-      <div className="text-base font-semibold text-slate-900 mt-0.5">{value}</div>
-      {sub && <div className="text-xs text-slate-500 mt-0.5">{sub}</div>}
+      <div className="text-base font-medium text-ink-900 mt-0.5">{value}</div>
+      {sub && <div className="text-xs text-ink-500 mt-0.5">{sub}</div>}
     </div>
   );
 }
