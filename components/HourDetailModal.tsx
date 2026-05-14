@@ -11,7 +11,33 @@ import {
   Clock,
   CheckCircle,
   AlertTriangle,
+  ArrowUp,
 } from "./Icons";
+
+const COMPASS = [
+  "N",
+  "NNE",
+  "NE",
+  "ENE",
+  "E",
+  "ESE",
+  "SE",
+  "SSE",
+  "S",
+  "SSW",
+  "SW",
+  "WSW",
+  "W",
+  "WNW",
+  "NW",
+  "NNW",
+];
+
+function compass(deg: number): string {
+  // Open-Meteo wind_direction_10m is the bearing the wind is COMING FROM.
+  const idx = Math.round(deg / 22.5) % 16;
+  return COMPASS[idx];
+}
 
 interface Props {
   hour: HourScored;
@@ -102,12 +128,30 @@ export function HourDetailModal({ hour, onClose }: Props) {
             label="Humidity"
             value={`${hour.humidity}%`}
           />
-          <Stat
-            icon={<Wind className="w-4 h-4" />}
-            label="Wind"
-            value={`${hour.windSpeed.toFixed(1)} km/h`}
-            sub={`Gusts ${hour.windGusts.toFixed(0)} km/h`}
-          />
+          <div className="rounded-lg border border-slate-200 px-3 py-2.5 bg-slate-50">
+            <div className="text-xs text-slate-500 flex items-center gap-1.5">
+              <Wind className="w-4 h-4" />
+              Wind
+            </div>
+            <div className="flex items-center gap-2 mt-0.5">
+              <div className="text-base font-semibold text-slate-900">
+                {hour.windSpeed.toFixed(1)} km/h
+              </div>
+              <div
+                title={`From ${compass(hour.windDirection)} (${Math.round(hour.windDirection)}°)`}
+                className="flex items-center gap-0.5 text-slate-600"
+              >
+                <ArrowUp
+                  className="w-4 h-4"
+                  style={{ transform: `rotate(${hour.windDirection + 180}deg)` }}
+                />
+                <span className="text-xs">{compass(hour.windDirection)}</span>
+              </div>
+            </div>
+            <div className="text-xs text-slate-500 mt-0.5">
+              Gusts {hour.windGusts.toFixed(0)} km/h
+            </div>
+          </div>
           <Stat
             icon={<Droplet className="w-4 h-4" />}
             label="Rain risk"

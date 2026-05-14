@@ -95,6 +95,13 @@ export const X = (p: P) => (
   </svg>
 );
 
+export const ArrowUp = (p: P) => (
+  <svg {...base} {...p}>
+    <line x1="12" y1="19" x2="12" y2="5" />
+    <polyline points="5 12 12 5 19 12" />
+  </svg>
+);
+
 export const ArrowLeft = (p: P) => (
   <svg {...base} {...p}>
     <line x1="19" y1="12" x2="5" y2="12" />
