@@ -19,7 +19,7 @@ export function LanguagePicker({ current, label }: Props) {
       <select
         value={current}
         onChange={(e) => pick(e.target.value as Lang)}
-        className="bg-cream-50 dark:bg-ink-800 border border-cream-200 dark:border-ink-700 rounded-lg px-2 py-1 text-sm text-ink-900 dark:text-cream-50 focus:outline-none focus:ring-2 focus:ring-clay-400"
+        className="bg-cream-50 dark:bg-ink-700 border border-cream-200 dark:border-ink-600 rounded-lg px-2 py-1 text-sm text-ink-900 dark:text-cream-50 focus:outline-none focus:ring-2 focus:ring-clay-400"
       >
         {LANGS.map((l) => (
           <option key={l.code} value={l.code}>

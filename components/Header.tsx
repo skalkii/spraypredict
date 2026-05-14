@@ -16,7 +16,7 @@ export function Header({ lang, theme, t, sticky }: Props) {
   return (
     <header
       className={[
-        "w-full border-b border-cream-200 dark:border-ink-700 bg-cream-50/90 dark:bg-ink-900/90 backdrop-blur",
+        "w-full border-b border-cream-200 dark:border-ink-600 bg-cream-50/90 dark:bg-ink-900/90 backdrop-blur",
         sticky ? "sticky top-0 z-20" : "",
       ].join(" ")}
     >
@@ -39,7 +39,7 @@ export function Header({ lang, theme, t, sticky }: Props) {
 function Logo({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 64 64" className={className} aria-hidden>
-      <rect width="64" height="64" rx="14" className="fill-cream-100 dark:fill-ink-800" />
+      <rect width="64" height="64" rx="14" className="fill-cream-100 dark:fill-ink-700" />
       <path
         d="M32 8 C 22 22, 16 32, 16 40 a16 16 0 0 0 32 0 c 0 -8 -6 -18 -16 -32 z"
         className="fill-clay-500"

@@ -46,7 +46,7 @@ export function ThemePicker({ initial, t }: Props) {
     <div
       role="group"
       aria-label={t.theme}
-      className="inline-flex items-center rounded-lg border border-cream-200 dark:border-ink-700 bg-cream-50 dark:bg-ink-800 p-0.5 shrink-0"
+      className="inline-flex items-center rounded-lg border border-cream-200 dark:border-ink-600 bg-cream-50 dark:bg-ink-700 p-0.5 shrink-0"
     >
       {opts.map(({ value, label, Icon }) => {
         const active = theme === value;

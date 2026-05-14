@@ -5,7 +5,7 @@ const REPO_URL = "https://github.com/skalkii/spraypredict";
 
 export function Footer({ t }: { t: Strings }) {
   return (
-    <footer className="w-full border-t border-cream-200 dark:border-ink-700 mt-10 py-6 text-xs text-ink-500 dark:text-ink-300">
+    <footer className="w-full border-t border-cream-200 dark:border-ink-600 mt-10 py-6 text-xs text-ink-500 dark:text-ink-300">
       <div className="mx-auto max-w-3xl px-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <p className="leading-relaxed flex-1">{t.disclaimer}</p>
         <div className="flex items-center gap-4 shrink-0">

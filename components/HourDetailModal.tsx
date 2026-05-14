@@ -78,7 +78,7 @@ export function HourDetailModal({ hour, onClose, t, lang }: Props) {
     <dialog
       ref={ref}
       onClick={backdropClick}
-      className="rounded-2xl p-0 max-w-md w-[92vw] backdrop:bg-ink-900/55 m-auto bg-white dark:bg-ink-800 dark:text-cream-50"
+      className="rounded-2xl p-0 max-w-md w-[92vw] backdrop:bg-ink-900/55 m-auto bg-white dark:bg-ink-700 dark:text-cream-50"
     >
       <div className={`px-5 py-4 border-b ${RATING_BG_SOFT[hour.rating]}`}>
         <div className="flex items-center justify-between gap-3">
@@ -120,7 +120,7 @@ export function HourDetailModal({ hour, onClose, t, lang }: Props) {
             label={t.humidity}
             value={`${hour.humidity}%`}
           />
-          <div className="rounded-lg border border-cream-200 dark:border-ink-700 px-3 py-2.5 bg-cream-50 dark:bg-ink-900">
+          <div className="rounded-lg border border-cream-200 dark:border-ink-600 px-3 py-2.5 bg-cream-50 dark:bg-ink-900">
             <div className="text-xs text-ink-500 dark:text-ink-300 flex items-center gap-1.5">
               <Wind className="w-4 h-4" />
               {t.wind}
@@ -220,7 +220,7 @@ function Stat({
   sub?: string;
 }) {
   return (
-    <div className="rounded-lg border border-cream-200 dark:border-ink-700 px-3 py-2.5 bg-cream-50 dark:bg-ink-900">
+    <div className="rounded-lg border border-cream-200 dark:border-ink-600 px-3 py-2.5 bg-cream-50 dark:bg-ink-900">
       <div className="text-xs text-ink-500 dark:text-ink-300 flex items-center gap-1.5">
         {icon}
         {label}

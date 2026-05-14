@@ -12,7 +12,7 @@ export function Explainer({ t }: { t: Strings }) {
     { title: t.expTimeTitle, body: t.expTimeBody },
   ];
   return (
-    <section className="rounded-2xl border border-cream-200 dark:border-ink-700 bg-white dark:bg-ink-800">
+    <section className="rounded-2xl border border-cream-200 dark:border-ink-600 bg-white dark:bg-ink-700">
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
@@ -25,11 +25,11 @@ export function Explainer({ t }: { t: Strings }) {
         </span>
       </button>
       {open && (
-        <div className="px-5 pb-5 space-y-5 border-t border-cream-100 dark:border-ink-700 pt-5">
+        <div className="px-5 pb-5 space-y-5 border-t border-cream-100 dark:border-ink-600 pt-5">
           {items.map((it) => (
             <div key={it.title}>
               <h3 className="font-medium text-ink-900 dark:text-cream-50">{it.title}</h3>
-              <p className="text-sm text-ink-500 dark:text-ink-300 mt-1.5 leading-relaxed">{it.body}</p>
+              <p className="text-sm text-ink-700 dark:text-ink-200 mt-1.5 leading-relaxed">{it.body}</p>
             </div>
           ))}
         </div>

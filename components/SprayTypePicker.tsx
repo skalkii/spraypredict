@@ -27,7 +27,7 @@ export function SprayTypePicker({ t, value, onChange }: Props) {
                 "rounded-xl border px-4 py-3 cursor-pointer transition",
                 selected
                   ? "border-clay-400 bg-clay-50 dark:bg-clay-700/20 dark:border-clay-500 ring-2 ring-clay-100 dark:ring-clay-700/30"
-                  : "border-cream-200 bg-cream-50 dark:border-ink-700 dark:bg-ink-900 hover:border-cream-300 dark:hover:border-ink-500",
+                  : "border-cream-200 bg-cream-50 dark:border-ink-600 dark:bg-ink-900 hover:border-cream-300 dark:hover:border-ink-500",
               ].join(" ")}
             >
               <input
@@ -39,7 +39,7 @@ export function SprayTypePicker({ t, value, onChange }: Props) {
                 className="sr-only"
               />
               <div className="font-medium text-ink-900 dark:text-cream-50">{label}</div>
-              <div className="text-xs text-ink-500 dark:text-ink-300 mt-0.5 leading-relaxed">{desc}</div>
+              <div className="text-xs text-ink-700 dark:text-ink-200 mt-0.5 leading-relaxed">{desc}</div>
             </label>
           );
         })}

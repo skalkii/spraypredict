@@ -73,7 +73,7 @@ export function MapPicker({ initialLat, initialLng, onPick }: Props) {
   return (
     <div
       ref={elRef}
-      className="w-full h-64 rounded-xl border border-cream-200 dark:border-ink-700 overflow-hidden z-0 dark:[filter:invert(0.92)_hue-rotate(180deg)_saturate(0.5)]"
+      className="w-full h-64 rounded-xl border border-cream-200 dark:border-ink-600 overflow-hidden z-0 dark:[filter:invert(0.92)_hue-rotate(180deg)_saturate(0.5)]"
       aria-label="Click on the map to pick a location"
     />
   );

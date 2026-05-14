@@ -34,12 +34,12 @@ export function LandingClient({ t }: Props) {
         <h1 className="text-4xl sm:text-5xl font-normal text-ink-900 dark:text-cream-50 leading-tight tracking-tight">
           {t.tagline}
         </h1>
-        <p className="text-ink-500 dark:text-ink-300 mt-3 leading-relaxed">
+        <p className="text-ink-700 dark:text-ink-200 mt-3 leading-relaxed">
           {t.description}
         </p>
       </header>
 
-      <section className="bg-white dark:bg-ink-800 rounded-2xl border border-cream-200 dark:border-ink-700 p-6 space-y-7">
+      <section className="bg-white dark:bg-ink-700 rounded-2xl border border-cream-200 dark:border-ink-600 p-6 space-y-7">
         <div>
           <h2 className="text-xs font-medium text-ink-500 dark:text-ink-300 mb-3 uppercase tracking-[0.18em]">
             {t.step1Location}

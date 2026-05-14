@@ -46,7 +46,7 @@ export function ForecastCalendar({ hours, t, lang }: Props) {
 
   return (
     <div className="space-y-4">
-      <div className="sticky top-0 z-10 -mx-4 px-4 py-2 bg-cream-50/85 dark:bg-ink-900/85 backdrop-blur supports-[backdrop-filter]:bg-cream-50/75 dark:supports-[backdrop-filter]:bg-ink-900/75 border-b border-cream-200 dark:border-ink-700">
+      <div className="sticky top-0 z-10 -mx-4 px-4 py-2 bg-cream-50/85 dark:bg-ink-900/85 backdrop-blur supports-[backdrop-filter]:bg-cream-50/75 dark:supports-[backdrop-filter]:bg-ink-900/75 border-b border-cream-200 dark:border-ink-600">
         <div className="flex items-center gap-3 text-xs text-ink-500 dark:text-ink-300 flex-wrap">
           <span className="inline-flex items-center gap-1.5">
             <span className="w-3 h-3 rounded-sm bg-emerald-500" /> {t.legendGood}
@@ -60,7 +60,7 @@ export function ForecastCalendar({ hours, t, lang }: Props) {
           <span className="inline-flex items-center gap-1.5 ml-2 opacity-60">
             <span className="w-3 h-3 rounded-sm bg-ink-300" /> {t.legendNight}
           </span>
-          <span className="ml-auto text-ink-300 hidden sm:inline">
+          <span className="ml-auto text-ink-500 dark:text-ink-300 hidden sm:inline">
             {t.tapHourHint}
           </span>
         </div>
@@ -130,8 +130,8 @@ function DayRow({
   const cells = Array.from({ length: 24 }, (_, i) => byHour.get(i) ?? null);
 
   return (
-    <div className="rounded-xl border border-cream-200 dark:border-ink-700 bg-white dark:bg-ink-800 overflow-hidden">
-      <div className="px-3 py-2 border-b border-cream-100 dark:border-ink-700 flex items-center justify-between gap-3">
+    <div className="rounded-xl border border-cream-200 dark:border-ink-600 bg-white dark:bg-ink-700 overflow-hidden">
+      <div className="px-3 py-2 border-b border-cream-100 dark:border-ink-600 flex items-center justify-between gap-3">
         <div className="flex items-baseline gap-2 min-w-0">
           <div className="font-medium text-ink-900 dark:text-cream-50 truncate">{label}</div>
           <div className="text-xs text-ink-500 dark:text-ink-300 shrink-0">{sublabel}</div>
@@ -162,7 +162,7 @@ function DayRow({
         })}
       </div>
       {showAxis && (
-        <div className="relative px-2 pb-2 text-[10px] text-ink-300 dark:text-ink-500 select-none h-4">
+        <div className="relative px-2 pb-2 text-[10px] text-ink-500 dark:text-ink-300 select-none h-4">
           {AXIS_MARKERS.map(({ h, label }) => (
             <span
               key={h}

@@ -71,11 +71,11 @@ export default async function ForecastPage({
         <WindowSummary best={best} total={windows.length} t={t} lang={lang} />
 
         {windows.length > 0 && (
-          <section className="rounded-2xl bg-white dark:bg-ink-800 border border-cream-200 dark:border-ink-700 p-5">
+          <section className="rounded-2xl bg-white dark:bg-ink-700 border border-cream-200 dark:border-ink-600 p-5">
             <h2 className="font-medium text-ink-900 dark:text-cream-50 mb-3 text-lg">
               {t.allWindows} ({windows.length})
             </h2>
-            <ul className="divide-y divide-cream-100 dark:divide-ink-700">
+            <ul className="divide-y divide-cream-100 dark:divide-ink-600">
               {windows.map((w, i) => (
                 <li key={i} className="py-2 flex items-center justify-between gap-3">
                   <div className="flex items-center gap-2 min-w-0">
