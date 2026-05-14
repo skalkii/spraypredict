@@ -109,6 +109,35 @@ t("spray-type switching changes ratings (rain spike at h6)", () => {
   assert(systemicEarly >= 3, `systemic h0-h3 should be green, got ${systemicEarly} green`);
 });
 
+t("drone tighter than herbicide on same 9 km/h wind", () => {
+  // 9 km/h wind: ground herbicide green (≤10), drone red (>8 green max, ≤12 hard cap → marginal not red)
+  // Use 13 km/h instead: herbicide marginal (10-15), drone red (>12 hard cap)
+  const hourly = fillHourly({
+    wind_speed_10m: Array(24).fill(13),
+    wind_gusts_10m: Array(24).fill(14),
+  });
+  const herbicide = scoreForecast(hourly, SPRAY_PROFILES.herbicide);
+  const drone = scoreForecast(hourly, SPRAY_PROFILES.drone);
+  assert(
+    !herbicide.every((h) => h.rating === "red"),
+    "herbicide should NOT be all red at 13 km/h",
+  );
+  assert(
+    drone.every((h) => h.rating === "red"),
+    "drone should be all red at 13 km/h (>12 hard cap)",
+  );
+});
+
+t("drone gusts cap fires earlier (16 km/h gusts)", () => {
+  // 16 km/h gusts: ground herbicide marginal (15-20), drone red (>15 hard cap)
+  const hourly = fillHourly({ wind_gusts_10m: Array(24).fill(16) });
+  const herbicide = scoreForecast(hourly, SPRAY_PROFILES.herbicide);
+  const drone = scoreForecast(hourly, SPRAY_PROFILES.drone);
+  const herbicideReds = herbicide.filter((h) => h.rating === "red").length;
+  const droneReds = drone.filter((h) => h.rating === "red").length;
+  assert(droneReds > herbicideReds, `drone reds (${droneReds}) should exceed herbicide reds (${herbicideReds})`);
+});
+
 t("foliar fertilizer: hot+sunny → red (leaf burn)", () => {
   const hourly = fillHourly({
     temperature_2m: Array(24).fill(32),
