@@ -1,8 +1,18 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import type { GeocodingResult } from "@/lib/types";
 import { MapPin, Search, Loader } from "./Icons";
+
+const MapPicker = dynamic(() => import("./MapPicker").then((m) => m.MapPicker), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-64 rounded-lg border border-slate-200 bg-slate-100 flex items-center justify-center text-slate-500 text-sm">
+      Loading map…
+    </div>
+  ),
+});
 
 export interface PickedLocation {
   latitude: number;
@@ -21,6 +31,7 @@ export function LocationPicker({ value, onChange }: Props) {
   const [searching, setSearching] = useState(false);
   const [geoLoading, setGeoLoading] = useState(false);
   const [geoError, setGeoError] = useState<string | null>(null);
+  const [showMap, setShowMap] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -84,6 +95,14 @@ export function LocationPicker({ value, onChange }: Props) {
     setResults([]);
   }
 
+  function pickFromMap(lat: number, lng: number) {
+    onChange({
+      latitude: lat,
+      longitude: lng,
+      label: `Pinned (${lat.toFixed(2)}°, ${lng.toFixed(2)}°)`,
+    });
+  }
+
   return (
     <div className="space-y-3">
       <button
@@ -118,6 +137,24 @@ export function LocationPicker({ value, onChange }: Props) {
           <Loader className="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 animate-spin" />
         )}
       </div>
+
+      <div className="text-center">
+        <button
+          type="button"
+          onClick={() => setShowMap((v) => !v)}
+          className="text-sm text-emerald-700 hover:text-emerald-900 underline"
+        >
+          {showMap ? "Hide map" : "or pin on a map"}
+        </button>
+      </div>
+
+      {showMap && (
+        <MapPicker
+          initialLat={value?.latitude}
+          initialLng={value?.longitude}
+          onPick={pickFromMap}
+        />
+      )}
 
       {results.length > 0 && (
         <ul className="rounded-lg border border-slate-200 bg-white divide-y divide-slate-100 overflow-hidden">
