@@ -8,17 +8,12 @@ interface Props {
   lang: Lang;
   theme: Theme;
   t: Strings;
-  /** Optional sticky behaviour on mobile-scroll pages. */
-  sticky?: boolean;
 }
 
-export function Header({ lang, theme, t, sticky }: Props) {
+export function Header({ lang, theme, t }: Props) {
   return (
     <header
-      className={[
-        "w-full border-b border-cream-200 dark:border-ink-600 bg-cream-50/90 dark:bg-ink-900/90 backdrop-blur",
-        sticky ? "sticky top-0 z-20" : "",
-      ].join(" ")}
+      className="sticky top-0 z-30 w-full border-b border-cream-200 dark:border-ink-600 bg-cream-50/90 dark:bg-ink-900/90 backdrop-blur"
     >
       <div className="mx-auto max-w-7xl px-4 py-3 flex items-center justify-between gap-3">
         <Link href="/" className="flex items-center gap-2 min-w-0 group">
