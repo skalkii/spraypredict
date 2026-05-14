@@ -115,20 +115,20 @@ export function LocationPicker({ t, value, onChange }: Props) {
         )}
         {geoLoading ? t.locating : t.useMyLocation}
       </button>
-      {geoError && <p className="text-sm text-rose-600">{geoError}</p>}
+      {geoError && <p className="text-sm text-rose-600 dark:text-rose-400">{geoError}</p>}
 
-      <div className="text-center text-xs uppercase tracking-[0.18em] text-ink-500">
+      <div className="text-center text-xs uppercase tracking-[0.18em] text-ink-500 dark:text-ink-300">
         {t.orSearch}
       </div>
 
       <div className="relative">
-        <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-ink-300" />
+        <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-ink-300 dark:text-ink-500" />
         <input
           type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={t.searchPlaceholder}
-          className="w-full rounded-xl border border-cream-200 bg-cream-50 pl-9 pr-3 py-3 text-base text-ink-900 placeholder:text-ink-300 focus:outline-none focus:ring-2 focus:ring-clay-400 focus:border-clay-400"
+          className="w-full rounded-xl border border-cream-200 dark:border-ink-700 bg-cream-50 dark:bg-ink-900 pl-9 pr-3 py-3 text-base text-ink-900 dark:text-cream-50 placeholder:text-ink-300 dark:placeholder:text-ink-500 focus:outline-none focus:ring-2 focus:ring-clay-400 focus:border-clay-400"
         />
         {searching && (
           <Loader className="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-ink-300 animate-spin" />
@@ -139,7 +139,7 @@ export function LocationPicker({ t, value, onChange }: Props) {
         <button
           type="button"
           onClick={() => setShowMap((v) => !v)}
-          className="text-sm text-clay-600 hover:text-clay-700 underline underline-offset-4"
+          className="text-sm text-clay-600 dark:text-clay-400 hover:text-clay-700 dark:hover:text-clay-200 underline underline-offset-4"
         >
           {showMap ? t.hideMap : t.orPinMap}
         </button>
@@ -154,16 +154,16 @@ export function LocationPicker({ t, value, onChange }: Props) {
       )}
 
       {results.length > 0 && (
-        <ul className="rounded-xl border border-cream-200 bg-white divide-y divide-cream-100 overflow-hidden">
+        <ul className="rounded-xl border border-cream-200 dark:border-ink-700 bg-white dark:bg-ink-900 divide-y divide-cream-100 dark:divide-ink-700 overflow-hidden">
           {results.map((r) => (
             <li key={r.id}>
               <button
                 type="button"
                 onClick={() => pick(r)}
-                className="w-full text-left px-4 py-3 hover:bg-cream-50 active:bg-cream-100"
+                className="w-full text-left px-4 py-3 hover:bg-cream-50 dark:hover:bg-ink-800 active:bg-cream-100"
               >
-                <div className="font-medium text-ink-900">{r.name}</div>
-                <div className="text-sm text-ink-500">
+                <div className="font-medium text-ink-900 dark:text-cream-50">{r.name}</div>
+                <div className="text-sm text-ink-500 dark:text-ink-300">
                   {[r.admin1, r.country].filter(Boolean).join(", ")} ·{" "}
                   {r.latitude.toFixed(2)}°, {r.longitude.toFixed(2)}°
                 </div>
@@ -174,17 +174,17 @@ export function LocationPicker({ t, value, onChange }: Props) {
       )}
 
       {value && (
-        <div className="rounded-xl border border-clay-200 bg-clay-50 px-4 py-3 flex items-center justify-between">
+        <div className="rounded-xl border border-clay-200 dark:border-clay-700 bg-clay-50 dark:bg-clay-700/20 px-4 py-3 flex items-center justify-between">
           <div className="min-w-0">
-            <div className="text-xs uppercase tracking-[0.16em] text-clay-700">
+            <div className="text-xs uppercase tracking-[0.16em] text-clay-700 dark:text-clay-200">
               {t.selected}
             </div>
-            <div className="font-medium text-ink-900 truncate">{value.label}</div>
+            <div className="font-medium text-ink-900 dark:text-cream-50 truncate">{value.label}</div>
           </div>
           <button
             type="button"
             onClick={() => onChange(null)}
-            className="text-sm text-clay-700 underline underline-offset-4 hover:text-clay-600 shrink-0 ml-3"
+            className="text-sm text-clay-700 dark:text-clay-200 underline underline-offset-4 hover:text-clay-600 shrink-0 ml-3"
           >
             {t.change}
           </button>

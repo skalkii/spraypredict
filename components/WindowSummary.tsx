@@ -34,14 +34,14 @@ function dayLabel(iso: string, t: Strings, lang: Lang): string {
 export function WindowSummary({ best, total, t, lang }: Props) {
   if (!best) {
     return (
-      <div className="rounded-2xl border border-rose-200 bg-rose-50 p-6">
+      <div className="rounded-2xl border border-rose-200 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/40 p-6">
         <div className="flex items-start gap-3">
-          <AlertTriangle className="w-6 h-6 text-rose-700 shrink-0 mt-0.5" />
+          <AlertTriangle className="w-6 h-6 text-rose-700 dark:text-rose-400 shrink-0 mt-0.5" />
           <div>
-            <div className="font-medium text-rose-900 text-lg">
+            <div className="font-medium text-rose-900 dark:text-rose-200 text-lg">
               {t.noSuitableWindows}
             </div>
-            <p className="text-sm text-rose-800 mt-1.5 leading-relaxed">
+            <p className="text-sm text-rose-800 dark:text-rose-300 mt-1.5 leading-relaxed">
               {t.noSuitableBody}
             </p>
           </div>
@@ -53,8 +53,8 @@ export function WindowSummary({ best, total, t, lang }: Props) {
   const isGreen = best.rating === "green";
   const Icon = isGreen ? CheckCircle : AlertTriangle;
   const color = isGreen
-    ? "border-emerald-200 bg-emerald-50 text-emerald-900"
-    : "border-amber-200 bg-amber-50 text-amber-900";
+    ? "border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-900 dark:text-emerald-200"
+    : "border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/40 text-amber-900 dark:text-amber-200";
   const ratingLabel = isGreen ? t.ratingGreen : t.ratingYellow;
 
   return (

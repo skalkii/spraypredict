@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="14" fill="#FAF9F5"/>
+  <!-- droplet -->
+  <path d="M32 8 C 22 22, 16 32, 16 40 a16 16 0 0 0 32 0 c 0 -8 -6 -18 -16 -32 z"
+        fill="#C96442"/>
+  <!-- highlight -->
+  <ellipse cx="26" cy="36" rx="4" ry="6" fill="#FAEFE7" opacity="0.6"/>
+</svg>

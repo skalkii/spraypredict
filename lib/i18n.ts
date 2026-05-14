@@ -114,6 +114,11 @@ export interface Strings {
   // Misc
   weatherCredit: string;
   language: string;
+  theme: string;
+  themeLight: string;
+  themeDark: string;
+  themeSystem: string;
+  viewOnGithub: string;
 }
 
 const en: Strings = {
@@ -207,6 +212,11 @@ const en: Strings = {
   tomorrow: "Tomorrow",
   weatherCredit: "Weather: Open-Meteo. Always follow product label.",
   language: "Language",
+  theme: "Theme",
+  themeLight: "Light",
+  themeDark: "Dark",
+  themeSystem: "System",
+  viewOnGithub: "View on GitHub",
 };
 
 const hi: Strings = {
@@ -299,6 +309,11 @@ const hi: Strings = {
   tomorrow: "कल",
   weatherCredit: "मौसम: Open-Meteo. हमेशा उत्पाद लेबल का पालन करें।",
   language: "भाषा",
+  theme: "थीम",
+  themeLight: "हल्की",
+  themeDark: "गहरी",
+  themeSystem: "सिस्टम",
+  viewOnGithub: "GitHub पर देखें",
 };
 
 const mr: Strings = {
@@ -390,6 +405,11 @@ const mr: Strings = {
   tomorrow: "उद्या",
   weatherCredit: "हवामान: Open-Meteo. नेहमी उत्पादन लेबलचे पालन करा.",
   language: "भाषा",
+  theme: "थीम",
+  themeLight: "हलकी",
+  themeDark: "गडद",
+  themeSystem: "सिस्टम",
+  viewOnGithub: "GitHub वर पहा",
 };
 
 const kn: Strings = {
@@ -482,6 +502,11 @@ const kn: Strings = {
   tomorrow: "ನಾಳೆ",
   weatherCredit: "ಹವಾಮಾನ: Open-Meteo. ಯಾವಾಗಲೂ ಉತ್ಪನ್ನ ಲೇಬಲ್ ಪಾಲಿಸಿ.",
   language: "ಭಾಷೆ",
+  theme: "ಥೀಮ್",
+  themeLight: "ತಿಳಿ",
+  themeDark: "ಗಾಢ",
+  themeSystem: "ಸಿಸ್ಟಮ್",
+  viewOnGithub: "GitHub ನಲ್ಲಿ ನೋಡಿ",
 };
 
 const ne: Strings = {
@@ -574,6 +599,11 @@ const ne: Strings = {
   tomorrow: "भोलि",
   weatherCredit: "मौसम: Open-Meteo। सधैं उत्पादन लेबल पालन गर्नुहोस्।",
   language: "भाषा",
+  theme: "थिम",
+  themeLight: "उज्यालो",
+  themeDark: "अँध्यारो",
+  themeSystem: "सिस्टम",
+  viewOnGithub: "GitHub मा हेर्नुहोस्",
 };
 
 const DICT: Record<Lang, Strings> = { en, hi, mr, kn, ne };

@@ -7,9 +7,11 @@ export const RATING_BG: Record<RuleResult, string> = {
 };
 
 export const RATING_BG_SOFT: Record<RuleResult, string> = {
-  green: "bg-emerald-100 text-emerald-900 border-emerald-300",
-  yellow: "bg-amber-100 text-amber-900 border-amber-300",
-  red: "bg-rose-100 text-rose-900 border-rose-300",
+  green:
+    "bg-emerald-100 text-emerald-900 border-emerald-300 dark:bg-emerald-950/50 dark:text-emerald-200 dark:border-emerald-800",
+  yellow:
+    "bg-amber-100 text-amber-900 border-amber-300 dark:bg-amber-950/50 dark:text-amber-200 dark:border-amber-800",
+  red: "bg-rose-100 text-rose-900 border-rose-300 dark:bg-rose-950/50 dark:text-rose-200 dark:border-rose-800",
 };
 
 export function hourOfDay(iso: string): number {

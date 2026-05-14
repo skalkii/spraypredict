@@ -13,13 +13,13 @@ export function LanguagePicker({ current, label }: Props) {
     window.location.reload();
   }
   return (
-    <label className="inline-flex items-center gap-1.5 text-xs text-ink-500 shrink-0">
+    <label className="inline-flex items-center gap-1.5 text-xs text-ink-500 dark:text-ink-300 shrink-0">
       <span className="sr-only">{label}</span>
       <span aria-hidden>🌐</span>
       <select
         value={current}
         onChange={(e) => pick(e.target.value as Lang)}
-        className="bg-transparent border border-cream-200 rounded-lg px-2 py-1 text-sm text-ink-900 focus:outline-none focus:ring-2 focus:ring-clay-400"
+        className="bg-cream-50 dark:bg-ink-800 border border-cream-200 dark:border-ink-700 rounded-lg px-2 py-1 text-sm text-ink-900 dark:text-cream-50 focus:outline-none focus:ring-2 focus:ring-clay-400"
       >
         {LANGS.map((l) => (
           <option key={l.code} value={l.code}>

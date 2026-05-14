@@ -46,8 +46,8 @@ export function ForecastCalendar({ hours, t, lang }: Props) {
 
   return (
     <div className="space-y-4">
-      <div className="sticky top-0 z-10 -mx-4 px-4 py-2 bg-cream-50/85 backdrop-blur supports-[backdrop-filter]:bg-cream-50/75 border-b border-cream-200">
-        <div className="flex items-center gap-3 text-xs text-ink-500 flex-wrap">
+      <div className="sticky top-0 z-10 -mx-4 px-4 py-2 bg-cream-50/85 dark:bg-ink-900/85 backdrop-blur supports-[backdrop-filter]:bg-cream-50/75 dark:supports-[backdrop-filter]:bg-ink-900/75 border-b border-cream-200 dark:border-ink-700">
+        <div className="flex items-center gap-3 text-xs text-ink-500 dark:text-ink-300 flex-wrap">
           <span className="inline-flex items-center gap-1.5">
             <span className="w-3 h-3 rounded-sm bg-emerald-500" /> {t.legendGood}
           </span>
@@ -104,7 +104,7 @@ function Chip({ count, color }: { count: number; color: string }) {
   const muted = count === 0;
   return (
     <span
-      className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded ${muted ? "text-ink-300" : "text-ink-700"}`}
+      className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded ${muted ? "text-ink-300 dark:text-ink-500" : "text-ink-700 dark:text-cream-50"}`}
     >
       <span className={`w-2 h-2 rounded-sm ${color} ${muted ? "opacity-40" : ""}`} />
       {count}
@@ -130,11 +130,11 @@ function DayRow({
   const cells = Array.from({ length: 24 }, (_, i) => byHour.get(i) ?? null);
 
   return (
-    <div className="rounded-xl border border-cream-200 bg-white overflow-hidden">
-      <div className="px-3 py-2 border-b border-cream-100 flex items-center justify-between gap-3">
+    <div className="rounded-xl border border-cream-200 dark:border-ink-700 bg-white dark:bg-ink-800 overflow-hidden">
+      <div className="px-3 py-2 border-b border-cream-100 dark:border-ink-700 flex items-center justify-between gap-3">
         <div className="flex items-baseline gap-2 min-w-0">
-          <div className="font-medium text-ink-900 truncate">{label}</div>
-          <div className="text-xs text-ink-500 shrink-0">{sublabel}</div>
+          <div className="font-medium text-ink-900 dark:text-cream-50 truncate">{label}</div>
+          <div className="text-xs text-ink-500 dark:text-ink-300 shrink-0">{sublabel}</div>
         </div>
         <DaySummary hours={hours} />
       </div>
@@ -144,7 +144,7 @@ function DayRow({
             return (
               <div
                 key={i}
-                className="aspect-square bg-cream-100 rounded-[3px]"
+                className="aspect-square bg-cream-100 dark:bg-ink-700 rounded-[3px]"
                 aria-hidden
               />
             );
@@ -162,7 +162,7 @@ function DayRow({
         })}
       </div>
       {showAxis && (
-        <div className="relative px-2 pb-2 text-[10px] text-ink-300 select-none h-4">
+        <div className="relative px-2 pb-2 text-[10px] text-ink-300 dark:text-ink-500 select-none h-4">
           {AXIS_MARKERS.map(({ h, label }) => (
             <span
               key={h}
