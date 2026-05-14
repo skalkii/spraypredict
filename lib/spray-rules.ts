@@ -203,9 +203,9 @@ export function scoreHour(
     score += 2;
   }
 
-  // Temperature
+  // Temperature: yellow buffer before red at extremes
   const [tMin, tMax] = profile.tempRange;
-  if (temp < tMin - 2 || temp > tMax + 8) {
+  if (temp < tMin - 5 || temp > tMax + 8) {
     flags.push(`Temp ${temp.toFixed(1)}°C outside safe range`);
     red = true;
   } else if (temp >= tMin && temp <= tMax) {
@@ -216,10 +216,10 @@ export function scoreHour(
     flags.push(`Temp ${temp.toFixed(1)}°C marginal`);
   }
 
-  // Humidity
+  // Humidity: yellow buffer between ideal range and hard limits
   const [hMin, hMax] = profile.humidityRange;
   const hardHumidityMax = profile.humidityHardMax ?? 95;
-  if (humidity < 25 || humidity > hardHumidityMax) {
+  if (humidity < 20 || humidity > hardHumidityMax) {
     flags.push(`Humidity ${humidity}% out of range`);
     red = true;
   } else if (humidity >= hMin && humidity <= hMax) {
@@ -230,19 +230,22 @@ export function scoreHour(
     flags.push(`Humidity ${humidity}% marginal`);
   }
 
-  // Delta-T
-  if (dt < 2) {
-    flags.push(`Delta-T ${dt.toFixed(1)}°C — too humid, poor droplet drying`);
+  // Delta-T: yellow on either side of ideal, red only at extremes
+  if (dt < 0) {
+    flags.push(`Delta-T ${dt.toFixed(1)}°C — saturated, droplets won't dry`);
     red = true;
-  } else if (dt > 10) {
-    flags.push(`Delta-T ${dt.toFixed(1)}°C — evaporation risk`);
+  } else if (dt > 12) {
+    flags.push(`Delta-T ${dt.toFixed(1)}°C — severe evaporation risk`);
     red = true;
   } else if (dt >= 2 && dt <= 8) {
     score += 2;
     positives.push(`Delta-T ideal (${dt.toFixed(1)}°C)`);
+  } else if (dt < 2) {
+    score += 1;
+    flags.push(`Delta-T ${dt.toFixed(1)}°C — humid, drying slow`);
   } else {
     score += 1;
-    flags.push(`Delta-T ${dt.toFixed(1)}°C marginal`);
+    flags.push(`Delta-T ${dt.toFixed(1)}°C — high evaporation`);
   }
 
   // Time-of-day preference (midday penalty when hot)
