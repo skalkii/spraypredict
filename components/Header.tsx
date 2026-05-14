@@ -20,7 +20,7 @@ export function Header({ lang, theme, t, sticky }: Props) {
         sticky ? "sticky top-0 z-20" : "",
       ].join(" ")}
     >
-      <div className="mx-auto max-w-3xl px-4 py-3 flex items-center justify-between gap-3">
+      <div className="mx-auto max-w-7xl px-4 py-3 flex items-center justify-between gap-3">
         <Link href="/" className="flex items-center gap-2 min-w-0 group">
           <Logo className="w-7 h-7 shrink-0" />
           <span className="font-serif text-base sm:text-lg text-ink-900 dark:text-cream-50 truncate">

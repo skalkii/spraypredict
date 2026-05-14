@@ -67,54 +67,60 @@ export default async function ForecastPage({
     const best = pickBest(windows);
 
     body = (
-      <>
+      <div className="space-y-5">
         <WindowSummary best={best} total={windows.length} t={t} lang={lang} />
 
-        {windows.length > 0 && (
-          <section className="rounded-2xl bg-white dark:bg-ink-700 border border-cream-200 dark:border-ink-600 p-5">
-            <h2 className="font-medium text-ink-900 dark:text-cream-50 mb-3 text-lg">
-              {t.allWindows} ({windows.length})
-            </h2>
-            <ul className="divide-y divide-cream-100 dark:divide-ink-600">
-              {windows.map((w, i) => (
-                <li key={i} className="py-2 flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-2 min-w-0">
-                    <span
-                      className={`w-2.5 h-2.5 rounded-full shrink-0 ${
-                        w.rating === "green" ? "bg-emerald-500" : "bg-amber-400"
-                      }`}
-                    />
-                    <span className="font-medium text-ink-900 dark:text-cream-50 truncate">
-                      {new Date(w.startTime.slice(0, 10) + "T12:00:00Z")
-                        .toLocaleDateString(intlLocale(lang), {
-                          weekday: "short",
-                          month: "short",
-                          day: "numeric",
-                          timeZone: "UTC",
-                        })}
-                    </span>
-                    <span className="text-ink-500 dark:text-ink-300 shrink-0">
-                      {w.startTime.slice(11, 16)}–{w.endTime.slice(11, 16)}
-                    </span>
-                  </div>
-                  <div className="text-sm text-ink-500 dark:text-ink-300 shrink-0">
-                    {Math.round(w.durationHours)}h · {w.avgScore}
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
+        <div className="grid gap-5 lg:grid-cols-3 lg:items-start">
+          {windows.length > 0 && (
+            <aside className="lg:col-span-1 lg:sticky lg:top-20">
+              <section className="rounded-2xl bg-white dark:bg-ink-700 border border-cream-200 dark:border-ink-600 p-5">
+                <h2 className="font-medium text-ink-900 dark:text-cream-50 mb-3 text-lg">
+                  {t.allWindows} ({windows.length})
+                </h2>
+                <ul className="divide-y divide-cream-100 dark:divide-ink-600 max-h-[60vh] overflow-y-auto">
+                  {windows.map((w, i) => (
+                    <li key={i} className="py-2 flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <span
+                          className={`w-2.5 h-2.5 rounded-full shrink-0 ${
+                            w.rating === "green" ? "bg-emerald-500" : "bg-amber-400"
+                          }`}
+                        />
+                        <span className="font-medium text-ink-900 dark:text-cream-50 truncate">
+                          {new Date(w.startTime.slice(0, 10) + "T12:00:00Z")
+                            .toLocaleDateString(intlLocale(lang), {
+                              weekday: "short",
+                              month: "short",
+                              day: "numeric",
+                              timeZone: "UTC",
+                            })}
+                        </span>
+                        <span className="text-ink-500 dark:text-ink-300 shrink-0">
+                          {w.startTime.slice(11, 16)}–{w.endTime.slice(11, 16)}
+                        </span>
+                      </div>
+                      <div className="text-sm text-ink-500 dark:text-ink-300 shrink-0">
+                        {Math.round(w.durationHours)}h · {w.avgScore}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            </aside>
+          )}
 
-        <section>
-          <h2 className="font-medium text-ink-900 dark:text-cream-50 mb-3 text-lg">
-            {t.hourlyForecast}
-          </h2>
-          <ForecastCalendar hours={hours} t={t} lang={lang} />
-        </section>
+          <div className={`space-y-5 ${windows.length > 0 ? "lg:col-span-2" : "lg:col-span-3"}`}>
+            <section>
+              <h2 className="font-medium text-ink-900 dark:text-cream-50 mb-3 text-lg">
+                {t.hourlyForecast}
+              </h2>
+              <ForecastCalendar hours={hours} t={t} lang={lang} />
+            </section>
 
-        <Explainer t={t} />
-      </>
+            <Explainer t={t} />
+          </div>
+        </div>
+      </div>
     );
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
@@ -134,7 +140,7 @@ export default async function ForecastPage({
   return (
     <>
       <Header lang={lang} theme={theme} t={t} />
-      <main className="mx-auto max-w-3xl px-4 py-6 sm:py-8">
+      <main className="mx-auto max-w-7xl px-4 py-6 sm:py-8">
         <div className="mb-6">
           <Link
             href="/"
@@ -150,7 +156,7 @@ export default async function ForecastPage({
           </h1>
         </div>
 
-        <div className="space-y-5">{body}</div>
+        {body}
       </main>
       <Footer t={t} />
     </>
