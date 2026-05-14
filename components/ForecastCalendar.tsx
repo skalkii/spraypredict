@@ -39,6 +39,9 @@ export function ForecastCalendar({ hours }: Props) {
           <span className="inline-flex items-center gap-1.5">
             <span className="w-3 h-3 rounded-sm bg-rose-500" /> Avoid
           </span>
+          <span className="inline-flex items-center gap-1.5 ml-2 opacity-60">
+            <span className="w-3 h-3 rounded-sm bg-slate-400" /> Night
+          </span>
           <span className="ml-auto text-slate-400 hidden sm:inline">
             Tap any hour for details
           </span>
@@ -112,9 +115,9 @@ function DayRow({
               key={i}
               type="button"
               onClick={() => onPick(h)}
-              className={`aspect-square rounded-[3px] ${RATING_BG[h.rating]} hover:ring-2 hover:ring-offset-1 hover:ring-slate-400 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-slate-600 transition`}
-              title={`${i}:00 — ${h.rating.toUpperCase()} · ${h.temp.toFixed(0)}°C · wind ${h.windSpeed.toFixed(0)} km/h`}
-              aria-label={`${i}:00 ${h.rating}`}
+              className={`aspect-square rounded-[3px] ${RATING_BG[h.rating]} ${h.isDaylight ? "" : "opacity-40"} hover:opacity-100 hover:ring-2 hover:ring-offset-1 hover:ring-slate-400 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-slate-600 transition`}
+              title={`${i}:00 — ${h.rating.toUpperCase()}${h.isDaylight ? "" : " (night)"} · ${h.temp.toFixed(0)}°C · wind ${h.windSpeed.toFixed(0)} km/h`}
+              aria-label={`${i}:00 ${h.rating}${h.isDaylight ? "" : " night"}`}
             />
           );
         })}

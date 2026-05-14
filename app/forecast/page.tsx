@@ -49,7 +49,7 @@ export default async function ForecastPage({
   let body;
   try {
     const raw = await fetchForecast(lat, lng);
-    const hours = scoreForecast(raw.hourly, profile);
+    const hours = scoreForecast(raw.hourly, profile, raw.daily);
     const windows = detectWindows(hours);
     const best = pickBest(windows);
 

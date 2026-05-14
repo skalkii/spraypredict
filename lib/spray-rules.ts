@@ -1,6 +1,7 @@
 import { deltaT } from "./delta-t";
 import type {
   HourScored,
+  OpenMeteoDaily,
   OpenMeteoHourly,
   RuleResult,
 } from "./types";
@@ -310,12 +311,29 @@ export function scoreHour(
     rating,
     flags,
     positives,
+    isDaylight: true,
   };
 }
 
 export function scoreForecast(
   hourly: OpenMeteoHourly,
   profile: SprayProfile,
+  daily?: OpenMeteoDaily,
 ): HourScored[] {
-  return hourly.time.map((_, i) => scoreHour(i, hourly, profile));
+  const sunriseByDay = new Map<string, string>();
+  const sunsetByDay = new Map<string, string>();
+  if (daily) {
+    for (let i = 0; i < daily.time.length; i++) {
+      sunriseByDay.set(daily.time[i], daily.sunrise[i]);
+      sunsetByDay.set(daily.time[i], daily.sunset[i]);
+    }
+  }
+  return hourly.time.map((t, i) => {
+    const scored = scoreHour(i, hourly, profile);
+    const day = t.slice(0, 10);
+    const sunrise = sunriseByDay.get(day);
+    const sunset = sunsetByDay.get(day);
+    const isDaylight = sunrise && sunset ? t >= sunrise && t < sunset : true;
+    return { ...scored, isDaylight };
+  });
 }

@@ -14,6 +14,12 @@ export interface OpenMeteoHourly {
   uv_index: number[];
 }
 
+export interface OpenMeteoDaily {
+  time: string[];     // YYYY-MM-DD
+  sunrise: string[];  // ISO local
+  sunset: string[];   // ISO local
+}
+
 export interface OpenMeteoForecast {
   latitude: number;
   longitude: number;
@@ -22,6 +28,7 @@ export interface OpenMeteoForecast {
   utc_offset_seconds: number;
   hourly_units: Record<string, string>;
   hourly: OpenMeteoHourly;
+  daily?: OpenMeteoDaily;
 }
 
 export interface GeocodingResult {
@@ -58,6 +65,7 @@ export interface HourScored {
   rating: RuleResult;
   flags: string[];
   positives: string[];
+  isDaylight: boolean;
 }
 
 export interface SprayWindow {

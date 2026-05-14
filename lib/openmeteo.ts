@@ -52,6 +52,7 @@ export async function fetchForecast(
     latitude: lat.toString(),
     longitude: lng.toString(),
     hourly: HOURLY_VARS,
+    daily: "sunrise,sunset",
     forecast_days: forecastDays.toString(),
     timezone: "auto",
     wind_speed_unit: "kmh",
