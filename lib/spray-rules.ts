@@ -16,6 +16,11 @@ export interface SprayProfile {
   tempRange: [number, number];
   humidityHardMax?: number;
   avoidLeafWetness: boolean;
+  // Wind: defaults for ground-rig spraying. Tighten for drones / very fine droplets.
+  windGreenMaxKmh?: number; // top of green band (default 10)
+  windHardMaxKmh?: number;  // above this is red (default 15)
+  gustsYellowMaxKmh?: number; // above this is marginal (default 15)
+  gustsHardMaxKmh?: number;   // above this is red (default 20)
 }
 
 export const SPRAY_PROFILES: Record<string, SprayProfile> = {
@@ -86,19 +91,25 @@ export const SPRAY_PROFILES: Record<string, SprayProfile> = {
     tempRange: [15, 25],
     avoidLeafWetness: false,
   },
+  drone: {
+    id: "drone",
+    label: "Drone application",
+    description:
+      "Aerial spray via drone. Tighter wind/gust limits due to fine droplets and downwash drift.",
+    rainFreeAfterHours: 4,
+    rainProbThreshold: 15,
+    preferMorningEvening: true,
+    humidityRange: [50, 85],
+    tempRange: [10, 28],
+    avoidLeafWetness: false,
+    windGreenMaxKmh: 8,
+    windHardMaxKmh: 12,
+    gustsYellowMaxKmh: 12,
+    gustsHardMaxKmh: 15,
+  },
 };
 
 const RED = -10;
-
-function bandedScore(
-  value: number,
-  green: [number, number],
-  yellow: [number, number],
-): { delta: number; band: RuleResult } {
-  if (value >= green[0] && value <= green[1]) return { delta: 2, band: "green" };
-  if (value >= yellow[0] && value <= yellow[1]) return { delta: 1, band: "yellow" };
-  return { delta: RED, band: "red" };
-}
 
 function hourOfDay(iso: string): number {
   const m = iso.match(/T(\d{2}):/);
@@ -153,25 +164,30 @@ export function scoreHour(
   let score = 0;
   let red = false;
 
-  // Wind speed
-  const windBand = bandedScore(wind, [3, 10], [10, 15]);
+  // Wind speed (per-profile thresholds; drones tighter than ground rigs)
+  const windGreenMax = profile.windGreenMaxKmh ?? 10;
+  const windHardMax = profile.windHardMaxKmh ?? 15;
   if (wind < 3) {
     flags.push(`Wind too calm (${wind.toFixed(1)} km/h) — inversion risk`);
     red = true;
-  } else if (wind > 15) {
-    flags.push(`Wind too strong (${wind.toFixed(1)} km/h) — drift risk`);
+  } else if (wind > windHardMax) {
+    flags.push(`Wind too strong (${wind.toFixed(1)} km/h, max ${windHardMax}) — drift risk`);
     red = true;
+  } else if (wind <= windGreenMax) {
+    score += 2;
+    positives.push(`Wind ideal (${wind.toFixed(1)} km/h)`);
   } else {
-    score += windBand.delta;
-    if (windBand.band === "green") positives.push(`Wind ideal (${wind.toFixed(1)} km/h)`);
-    else flags.push(`Wind marginal (${wind.toFixed(1)} km/h)`);
+    score += 1;
+    flags.push(`Wind marginal (${wind.toFixed(1)} km/h)`);
   }
 
   // Gusts
-  if (gusts > 20) {
-    flags.push(`Gusts ${gusts.toFixed(1)} km/h — high drift risk`);
+  const gustsYellowMax = profile.gustsYellowMaxKmh ?? 15;
+  const gustsHardMax = profile.gustsHardMaxKmh ?? 20;
+  if (gusts > gustsHardMax) {
+    flags.push(`Gusts ${gusts.toFixed(1)} km/h (max ${gustsHardMax}) — high drift risk`);
     red = true;
-  } else if (gusts > 15) {
+  } else if (gusts > gustsYellowMax) {
     flags.push(`Gusts ${gusts.toFixed(1)} km/h — marginal`);
     score += 1;
   } else {
